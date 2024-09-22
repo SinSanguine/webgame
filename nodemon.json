@@ -1,0 +1,8 @@
+{
+    "ext": "js,mustache,dictionary.json,html,svg",
+    "ignore": [
+        "/static/**"
+    ],
+    "delay": 1000,
+    "quiet": true
+}
