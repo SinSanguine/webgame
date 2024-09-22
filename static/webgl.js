@@ -39,7 +39,7 @@ window.addEventListener("load", startup, false);
 async function startup() {
     try {
         /** @type {{default: import('mqtt')}} */
-        const { default: mqtt } = await import('https://unpkg.com/mqtt@5.3.0/dist/mqtt.esm.js');
+        const { default: mqtt } = await import('/mqtt/dist/mqtt.esm.js');
         const mqtt_client = await mqtt.connectAsync('ws://localhost:8333/');
         mqtt_client.subscribe('players/+', err => {
 

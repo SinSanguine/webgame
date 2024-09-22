@@ -9,6 +9,7 @@ const ws = require('websocket-stream');
 const app = express();
 
 app.use(express.static('./static'));
+app.use('/mqtt', express.static('./node_modules/mqtt'));
 
 app.listen(process.env.PORT, () => console.log('Server listening on ', process.env.PORT));
 
