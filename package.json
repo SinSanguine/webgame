@@ -1,0 +1,23 @@
+{
+  "name": "webgame",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": " PORT=9090 nodemon app.js",
+    "test": "jest",
+    "tsc": "tsc"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "description": "",
+  "dependencies": {
+    "eslint": "^9.10.0",
+    "express": "^4.21.0",
+    "nodemon": "^3.1.5"
+  },
+  "devDependencies": {
+    "@types/eslint__js": "^8.42.3",
+    "typescript": "^5.6.2"
+  }
+}
