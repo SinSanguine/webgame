@@ -1,8 +1,10 @@
 import resizeCanvasToDisplaySize from './utils/resize_canvas_to_display_size.mjs';
 import create_shader_program from './utils/create_shader_program.mjs';
+import create_objects from './utils/create_objects.mjs';
 import create_shader_variable_bindings from './utils/create_shader_variable_bindings.mjs';
 import init_players from './players.mjs';
 import shader_config from './config/shader_config.mjs';
+import object_config from './config/object_config.mjs';
 
 // Vertex information 
 
@@ -19,8 +21,9 @@ let aVertexPosition;
 
 const size = 0.1;
 const degreesPerSecond = 180.0;
-const sync_time = 5;
 let previousTime = 0.0;
+
+
 
 window.addEventListener("load", startup, false);
 
@@ -35,7 +38,8 @@ async function startup() {
             throw Error('no webgl context');
 
         const shader_program= create_shader_program(gl,shader_config);
-        const variables = create_shader_variable_bindings(gl,shader_config,shader_program);
+        const variables = create_shader_variable_bindings(gl, shader_config, shader_program);
+        const objects = create_objects(gl, object_config, shader_program);
         
 
         /**@type {[number,number]} */
@@ -58,9 +62,10 @@ async function startup() {
             const { width: css_width, height: css_height } = getComputedStyle(glCanvas);
             const { width, height } = { width: Number.parseInt(css_width.slice(0, -1 * 'px'.length)), height: Number.parseInt(css_height.slice(0, -1 * 'px'.length)) };
             players[me] = [
-                (event.clientX / width * 2 - 1),
-                (-event.clientY / height * 2 + 1)
+                (event.offsetX / width * 2 - 1),
+                (-event.offsetY / height * 2 + 1)
             ];
+            // console.log(players[me]);
         })
 
         const animateScene = () => {
@@ -79,23 +84,9 @@ async function startup() {
             variables.vertex_shader.uScalingFactor = [height > width ? 1.0 : height / width, width > height ? 1.0 : width / height];
             variables.vertex_shader.uRotationVector = currentRotation;
 
-            gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-
-            aVertexPosition = gl.getAttribLocation(shader_program, "aVertexPosition");
-
-            gl.enableVertexAttribArray(aVertexPosition);
-            gl.vertexAttribPointer(
-                aVertexPosition,
-                vertexNumComponents,
-                gl.FLOAT,
-                false,
-                0,
-                0,
-            );
-
             Object.values(players).forEach(position => {
                 variables.vertex_shader.u_position_adjust = position;
-                gl.drawArrays(gl.TRIANGLES, 0, vertexCount);
+                objects.circle.draw();
             });
 
             requestAnimationFrame((currentTime) => {

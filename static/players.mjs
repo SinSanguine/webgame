@@ -19,7 +19,7 @@ export default async ()=>{
     mqtt_client.on('message', (incoming_topic, message_buffer) => {
 
         const message = message_buffer.toString('utf8');
-        console.log('message', incoming_topic, message);
+        // console.log('message', incoming_topic, message);
         if (incoming_topic !== topic && message)
             players[topic] = JSON.parse(message);
 
@@ -27,7 +27,7 @@ export default async ()=>{
     });
     setInterval(()=>{
         mqtt_client.publishAsync(topic, JSON.stringify(players[client_id]), { qos: 1, retain: true })
-            .then(() => console.log(topic))
+            // .then(() => console.log(topic))
             .catch(console.log);
     },sync_time)
     return {me:client_id,players};
